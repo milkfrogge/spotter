@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="Go" enabled="true" />
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgadmin/storage" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_logical/mappings" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_logical/snapshots" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_wal/archive_status" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_commit_ts" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_dynshmem" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_notify" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_replslot" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_serial" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_snapshots" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_stat" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_tblspc" />
+      <excludeFolder url="file://$MODULE_DIR$/docker/pgdata/pg_twophase" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
