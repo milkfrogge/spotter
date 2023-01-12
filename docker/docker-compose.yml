@@ -63,7 +63,7 @@ services:
     image: dpage/pgadmin4:6.18
     environment:
       PGADMIN_DEFAULT_EMAIL: "test@mail.com"
-      PGADMIN_DEFAULT_PASSWORD: "testpassword"
+      PGADMIN_DEFAULT_PASSWORD: "testpasswor"
       PGADMIN_CONFIG_SERVER_MODE: "False"
     volumes:
       - ./pgadmin:/var/lib/pgadmin
