@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS public."user"
 (
     id bigint NOT NULL DEFAULT nextval('user_id_seq'::regclass),
     name varchar(15) NOT NULL, /* Nick */
-    phone_number varchar(11) NOT NULL, /* 79999999999 */
-    email varchar(30) NOT NULL, /* Nick@gmail.com */
+    phone_number varchar(11) NOT NULL UNIQUE , /* 79999999999 */
+    email varchar(30) NOT NULL UNIQUE , /* Nick@gmail.com */
     registration_date date NOT NULL DEFAULT now(),
     password_hash varchar(60) NOT NULL, /* BCrypt hash length */
     CONSTRAINT user_pkey PRIMARY KEY (id)
