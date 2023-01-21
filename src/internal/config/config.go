@@ -7,18 +7,22 @@ import (
 )
 
 type AppConfig struct {
-	IsDebug          bool `yaml:"is_debug" env_default:"true"`
-	ConnectionConfig struct {
-		Type        string `yaml:"type" env-default:"port"`
-		BindAddress string `yaml:"bind_ip" env-default:"0.0.0.0:8888"`
-	} `yaml:"listen"`
-	DataBaseConfig struct {
-		Host     string `yaml:"host" env-default:"0.0.0.0"`
-		Port     string `yaml:"port" env-default:"5432"`
-		Name     string `yaml:"name" env-default:"spotter_db"`
-		User     string `yaml:"user" env-default:"nick"`
-		Password string `yaml:"password" env-default:"testpaassword"`
-	} `yaml:"database"`
+	IsDebug    bool             `yaml:"is_debug" env_default:"true"`
+	ConnConfig ConnectionConfig `yaml:"listen"`
+	DbConfig   DataBaseConfig   `yaml:"database"`
+}
+
+type ConnectionConfig struct {
+	Type        string `yaml:"type" env-default:"port"`
+	BindAddress string `yaml:"bind_ip" env-default:"0.0.0.0:8888"`
+}
+
+type DataBaseConfig struct {
+	Host     string `yaml:"host" env-default:"0.0.0.0"`
+	Port     string `yaml:"port" env-default:"5432"`
+	Name     string `yaml:"name" env-default:"spotter_db"`
+	User     string `yaml:"user" env-default:"nick"`
+	Password string `yaml:"password" env-default:"testpaassword"`
 }
 
 var config *AppConfig

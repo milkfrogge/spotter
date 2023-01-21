@@ -24,5 +24,5 @@ func main() {
 	log.Infof("Statring application")
 	router := httprouter.New()
 	router.GET("/", Index)
-	log.Fatal(http.ListenAndServe(appConfig.ConnectionConfig.BindAddress, router))
+	log.Fatal(http.ListenAndServe(appConfig.ConnConfig.BindAddress, router))
 }
