@@ -1,6 +1,7 @@
 package main
 
 import (
+	"SpotterBackend/src/internal/config"
 	"SpotterBackend/src/pkg/logging"
 	"fmt"
 	"net/http"
@@ -9,14 +10,19 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	fmt.Fprint(w, "Welcome!\n")
-
+	log := logging.GetLogger()
+	_, err := fmt.Fprint(w, "Welcome %s!\n", r.Host)
+	if err != nil {
+		log.Fatal("")
+	}
 }
 
 func main() {
 	log := logging.GetLogger()
+	appConfig := config.GetConfig()
+	log.Printf("App appConfig: %v\n", appConfig)
 	log.Infof("Statring application")
 	router := httprouter.New()
 	router.GET("/", Index)
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(appConfig.ConnConfig.BindAddress, router))
 }

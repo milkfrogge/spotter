@@ -1,7 +1,0 @@
----
-
-is_debug: true
-listen:
-  type: port
-  port: 7283
-  bind_ip:  0.0.0.0

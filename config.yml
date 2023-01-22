@@ -1,0 +1,12 @@
+---
+
+is_debug: true
+listen:
+  type: port
+  bind_address:  0.0.0.0:8888
+database:
+  host: localhost
+  port: 5432
+  name: spotter_db
+  user: nick
+  password: testpaassword
