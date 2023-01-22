@@ -35,8 +35,8 @@ services:
       - "pg_stat_statements.track=all"
     environment:
       POSTGRES_DB: "spotter_db"
-      POSTGRES_USER: "nick"
-      POSTGRES_PASSWORD: "testpaassword"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
       - ./init_db:/docker-entrypoint-initdb.d

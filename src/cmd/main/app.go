@@ -2,11 +2,13 @@ package main
 
 import (
 	"SpotterBackend/src/internal/config"
+	"SpotterBackend/src/internal/user/db"
+	"SpotterBackend/src/pkg/client"
 	"SpotterBackend/src/pkg/logging"
+	"context"
 	"fmt"
-	"net/http"
-
 	"github.com/julienschmidt/httprouter"
+	"net/http"
 )
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -20,6 +22,12 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 func main() {
 	log := logging.GetLogger()
 	appConfig := config.GetConfig()
+	pgClient, err := client.NewClient(context.Background(), appConfig.DbConfig)
+	if err != nil {
+		log.Fatalf("error while init db: %s", err)
+	}
+	userStorage := db.NewStorage(pgClient, log)
+	userStorage.FindOne(context.Background(), 0)
 	log.Printf("App appConfig: %v\n", appConfig)
 	log.Infof("Statring application")
 	router := httprouter.New()

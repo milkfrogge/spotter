@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS public."user"
     TABLESPACE pg_default;
 
 ALTER TABLE public."user"
-    OWNER to nick;
+    OWNER to admin;
 
 /* Random data for test */
 
