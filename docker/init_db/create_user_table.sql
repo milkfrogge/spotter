@@ -12,10 +12,12 @@ CREATE SEQUENCE user_id_seq
 CREATE TABLE IF NOT EXISTS public."user"
 (
     id bigint NOT NULL DEFAULT nextval('user_id_seq'::regclass),
-    name varchar(15) NOT NULL, /* Nick */
-    phone_number varchar(11) NOT NULL UNIQUE , /* 79999999999 */
-    email varchar(30) NOT NULL UNIQUE , /* Nick@gmail.com */
+    name varchar(15) NOT NULL DEFAULT '', /* Nick */
+    phone_number varchar(11) NOT NULL UNIQUE DEFAULT '', /* 79999999999 */
+    confirmation bool default False,
+    email varchar(30) NOT NULL UNIQUE DEFAULT '', /* Nick@gmail.com */
     registration_date date NOT NULL DEFAULT now(),
+    rating float8 NOT NULL DEFAULT 0,
     password_hash varchar(60) NOT NULL, /* BCrypt hash length */
     CONSTRAINT user_pkey PRIMARY KEY (id)
     )
@@ -23,7 +25,7 @@ CREATE TABLE IF NOT EXISTS public."user"
     TABLESPACE pg_default;
 
 ALTER TABLE public."user"
-    OWNER to nick;
+    OWNER to admin;
 
 /* Random data for test */
 
@@ -35,5 +37,5 @@ INSERT INTO public."user"(	name, phone_number, email, password_hash)	VALUES ('Ty
 INSERT INTO public."user"(	name, phone_number, email, password_hash)	VALUES ('Rebecca Cox', 99836023511, 'zwang@tyler-moore.com', '$2b$12$22JdHI9CUOjqF9Lc5ZZlquJ/r6wq1YFPL.y/71TINuSjGp3eh2O/e');
 INSERT INTO public."user"(	name, phone_number, email, password_hash)	VALUES ('Nichole Jackson', 00118511377, 'owatson@mcguire.com', '$2b$12$.R79uVxFwdjgDbLkbt2V1ec7uDC5l3PVArfiZ.cV1hPDeLD0qljzO');
 INSERT INTO public."user"(	name, phone_number, email, password_hash)	VALUES ('Steven Williams', 13396861976, 'cewing@gmail.com', '$2b$12$P3MnfZdggI5Pdj7FHNSTS.Lk3alTnpSLw81UHRQBOWrHSJZ40sUqi');
-INSERT INTO public."user"(	name, phone_number, email, password_hash)	VALUES ('Benjamin Knight', 16653967395, 'stephanienash@davis.biz', '$2b$12$J/Y6tfBYeRGSNLy1G8WmKuMi4MGBJcZphQARRTnmn7ImFzudcmENW');
 INSERT INTO public."user"(	name, phone_number, email, password_hash)	VALUES ('Diana Haynes', 20352487837, 'dharrington@silva.com', '$2b$12$5vSX/N9FA1wxbhKjixZqiePLYjZWCdogzeyA9PRqG2fl.Tae92ZVa');
+INSERT INTO public."user"(	name, phone_number, email, password_hash)	VALUES ('Benjamin Knight', 16653967395, 'stephanienash@davis.biz', '$2b$12$J/Y6tfBYeRGSNLy1G8WmKuMi4MGBJcZphQARRTnmn7ImFzudcmENW');

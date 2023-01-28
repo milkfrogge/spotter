@@ -20,8 +20,8 @@ type ConnectionConfig struct {
 type DataBaseConfig struct {
 	Host     string `yaml:"host" env-default:"0.0.0.0"`
 	Port     string `yaml:"port" env-default:"5432"`
-	Name     string `yaml:"name" env-default:"spotter_db"`
-	User     string `yaml:"user" env-default:"nick"`
+	DbName   string `yaml:"db_name" env-default:"spotter_db"`
+	Username string `yaml:"username" env-default:"nick"`
 	Password string `yaml:"password" env-default:"testpaassword"`
 }
 
@@ -47,8 +47,8 @@ func GetConfig() *AppConfig {
 //type ConfigDatabase struct {
 //	Port     string `yaml:"port" env:"PORT" env-default:"5432"`
 //	Host     string `yaml:"host" env:"HOST" env-default:"localhost"`
-//	Name     string `yaml:"name" env:"NAME" env-default:"postgres"`
-//	User     string `yaml:"user" env:"USER" env-default:"user"`
+//	DbName     string `yaml:"name" env:"NAME" env-default:"postgres"`
+//	Username     string `yaml:"user" env:"USER" env-default:"user"`
 //	Password string `yaml:"password" env:"PASSWORD"`
 //}
 
