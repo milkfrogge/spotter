@@ -14,7 +14,10 @@ import (
 	"fmt"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/sirupsen/logrus"
+	"golang.org/x/crypto/bcrypt"
 )
+
+const hashCost = 12
 
 type UserStorage struct {
 	client client.Client
@@ -23,14 +26,17 @@ type UserStorage struct {
 
 func (s *UserStorage) CreateByEmail(ctx context.Context, user model.CreateByEmailDTO) (int64, error) {
 
-	//TODO: bcrypt for hashing password
+	hashBytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), hashCost)
+	if err != nil {
+		return -1, errors.New(constants.InternalServerError)
+	}
 	qRow := s.client.QueryRow(
 		ctx,
 		"INSERT INTO public.\"user\" (email, password_hash) values ($1, $2) RETURNING id",
-		user.Email, user.Password,
+		user.Email, string(hashBytes),
 	)
 	var id int64
-	err := qRow.Scan(&id)
+	err = qRow.Scan(&id)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) {
