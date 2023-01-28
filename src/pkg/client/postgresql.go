@@ -1,7 +1,7 @@
 package client
 
 import (
-	"SpotterBackend/src/internal/config"
+	"SpotterBackend/src/pkg/config"
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5"

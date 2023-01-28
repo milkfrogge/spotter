@@ -6,10 +6,13 @@
 package storage
 
 import (
+	"SpotterBackend/src/internal/constants"
 	"SpotterBackend/src/internal/user/model"
 	"SpotterBackend/src/pkg/client"
 	"context"
+	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/sirupsen/logrus"
 )
 
@@ -29,8 +32,16 @@ func (s *UserStorage) CreateByEmail(ctx context.Context, user model.CreateByEmai
 	var id int64
 	err := qRow.Scan(&id)
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			s.log.Errorf("SQL Error: %s, statuscode: %s", pgErr.Message, pgErr.Code)
+			if pgErr.Code == "23505" {
+				return -1, errors.New(constants.UserAlreadyExistsEmail)
+
+			}
+		}
 		s.log.Errorf("Unable to create new user by email: %s", err)
-		return -1, err
+		return -1, errors.New(constants.InternalServerError)
 	}
 	return id, nil
 

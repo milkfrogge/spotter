@@ -1,11 +1,11 @@
 package main
 
 import (
-	"SpotterBackend/src/internal/config"
 	"SpotterBackend/src/internal/user/handler"
 	"SpotterBackend/src/internal/user/service"
 	"SpotterBackend/src/internal/user/storage"
 	"SpotterBackend/src/pkg/client"
+	"SpotterBackend/src/pkg/config"
 	"SpotterBackend/src/pkg/logging"
 	"context"
 	"fmt"

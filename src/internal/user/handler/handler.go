@@ -6,10 +6,13 @@
 package handler
 
 import (
+	"SpotterBackend/src/internal/constants"
 	"SpotterBackend/src/internal/handler"
 	"SpotterBackend/src/internal/user/model"
 	"SpotterBackend/src/internal/user/service"
+	"SpotterBackend/src/pkg/utils"
 	"encoding/json"
+	"errors"
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
 	"io"
@@ -38,27 +41,26 @@ func (h *userHandler) createByEmail(w http.ResponseWriter, r *http.Request, ps h
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		h.log.Errorf("Error while read body of Request: %s", err)
-		w.WriteHeader(500)
+		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
 		return
 	}
 	dto := model.CreateByEmailDTO{}
 	err = json.Unmarshal(body, &dto)
 	if err != nil {
 		h.log.Errorf("Error while unmarshall: %s", err)
-		w.WriteHeader(500)
+		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
 		return
 	}
 	var userId int64
 	userId, err = h.service.CreateUserByEmail(dto)
 	if err != nil {
-		h.log.Errorf("Error while creating user: %s", err)
-		w.WriteHeader(500)
+		utils.WriteResponseError(w, err)
 		return
 	}
 	respJSON, err := json.Marshal(map[string]int64{"id": userId})
 	if err != nil {
 		h.log.Errorf("Error while marshall: %s", err)
-		w.WriteHeader(500)
+		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
 		return
 	}
 	w.Write(respJSON)
