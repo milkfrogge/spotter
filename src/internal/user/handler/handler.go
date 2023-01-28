@@ -42,6 +42,7 @@ func (h *userHandler) Register(router *httprouter.Router) {
 
 func (h *userHandler) createByEmail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	body, err := io.ReadAll(r.Body)
+	h.log.Errorf("%s", string(body))
 	if err != nil {
 		h.log.Errorf("Error while read body of Request: %s", err)
 		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
