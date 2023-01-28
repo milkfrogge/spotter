@@ -1,4 +1,4 @@
-package user
+package model
 
 import "time"
 
@@ -12,11 +12,11 @@ type User struct {
 }
 
 type CreateByEmailDTO struct {
-	email    string
-	password string
+	Email    string
+	Password string
 }
 
 type CreateByPhoneNumberDTO struct {
-	phoneNumber string
-	password    string
+	PhoneNumber string
+	Password    string
 }

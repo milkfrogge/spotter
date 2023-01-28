@@ -2,7 +2,9 @@ package main
 
 import (
 	"SpotterBackend/src/internal/config"
-	"SpotterBackend/src/internal/user/db"
+	"SpotterBackend/src/internal/user/handler"
+	"SpotterBackend/src/internal/user/service"
+	"SpotterBackend/src/internal/user/storage"
 	"SpotterBackend/src/pkg/client"
 	"SpotterBackend/src/pkg/logging"
 	"context"
@@ -22,15 +24,19 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 func main() {
 	log := logging.GetLogger()
 	appConfig := config.GetConfig()
+	router := httprouter.New()
+	//
 	pgClient, err := client.NewClient(context.Background(), appConfig.DbConfig)
 	if err != nil {
 		log.Fatalf("error while init db: %s", err)
 	}
-	userStorage := db.NewStorage(pgClient, log)
-	userStorage.FindOne(context.Background(), 0)
+	userStorage := storage.NewStorage(pgClient, log)
+	userService := service.NewUserService(userStorage, log)
+	userHandler := handler.NewUserHandler(log, userService)
+
+	userHandler.Register(router)
 	log.Printf("App appConfig: %v\n", appConfig)
 	log.Infof("Statring application")
-	router := httprouter.New()
 	router.GET("/", Index)
 	log.Fatal(http.ListenAndServe(appConfig.ConnConfig.BindAddress, router))
 }
