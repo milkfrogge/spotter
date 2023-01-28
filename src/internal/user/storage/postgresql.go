@@ -53,9 +53,31 @@ func (s *UserStorage) CreateByEmail(ctx context.Context, user model.CreateByEmai
 
 }
 
-func (s *UserStorage) CreateByPhoneNumber(ctx context.Context, user model.CreateByPhoneNumberDTO) {
-	//TODO implement me
-	panic("implement me")
+func (s *UserStorage) CreateByPhoneNumber(ctx context.Context, user model.CreateByPhoneNumberDTO) (int64, error) {
+	hashBytes, err := bcrypt.GenerateFromPassword([]byte(user.Password), hashCost)
+	if err != nil {
+		return -1, errors.New(constants.InternalServerError)
+	}
+	qRow := s.client.QueryRow(
+		ctx,
+		"INSERT INTO public.\"user\" (phone_number, password_hash) values ($1, $2) RETURNING id",
+		user.PhoneNumber, string(hashBytes),
+	)
+	var id int64
+	err = qRow.Scan(&id)
+	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			s.log.Errorf("SQL Error: %s, statuscode: %s", pgErr.Message, pgErr.Code)
+			if pgErr.Code == "23505" {
+				return -1, errors.New(constants.UserAlreadyExistsPhone)
+
+			}
+		}
+		s.log.Errorf("Unable to create new user by phone number: %s", err)
+		return -1, errors.New(constants.InternalServerError)
+	}
+	return id, nil
 }
 
 func (s *UserStorage) FindOne(ctx context.Context, id int) {

@@ -19,6 +19,9 @@ import (
 	"net/http"
 )
 
+const endpointCreateByEmail = "/auth/signup/email/"
+const endpointCreateByPhone = "/auth/signup/phone/"
+
 type userHandler struct {
 	log     *logrus.Logger
 	service *service.UserService
@@ -33,11 +36,11 @@ func NewUserHandler(logger *logrus.Logger, userService *service.UserService) han
 
 func (h *userHandler) Register(router *httprouter.Router) {
 	h.log.Println("Register routes for user")
-	router.POST("/auth/signup/", h.createByEmail)
+	router.POST(endpointCreateByEmail, h.createByEmail)
+	router.POST(endpointCreateByPhone, h.createByPhone)
 }
 
 func (h *userHandler) createByEmail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	h.log.Println("in createEmail")
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		h.log.Errorf("Error while read body of Request: %s", err)
@@ -53,6 +56,35 @@ func (h *userHandler) createByEmail(w http.ResponseWriter, r *http.Request, ps h
 	}
 	var userId int64
 	userId, err = h.service.CreateUserByEmail(dto)
+	if err != nil {
+		utils.WriteResponseError(w, err)
+		return
+	}
+	respJSON, err := json.Marshal(map[string]int64{"id": userId})
+	if err != nil {
+		h.log.Errorf("Error while marshall: %s", err)
+		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
+		return
+	}
+	w.Write(respJSON)
+}
+
+func (h *userHandler) createByPhone(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		h.log.Errorf("Error while read body of Request: %s", err)
+		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
+		return
+	}
+	dto := model.CreateByPhoneNumberDTO{}
+	err = json.Unmarshal(body, &dto)
+	if err != nil {
+		h.log.Errorf("Error while unmarshall: %s", err)
+		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
+		return
+	}
+	var userId int64
+	userId, err = h.service.CreateUserByPhone(dto)
 	if err != nil {
 		utils.WriteResponseError(w, err)
 		return

@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS public."user"
 (
     id bigint NOT NULL DEFAULT nextval('user_id_seq'::regclass),
     name varchar(15) NOT NULL DEFAULT '', /* Nick */
-    phone_number varchar(11) NOT NULL DEFAULT '', /* 79999999999 */
+    phone_number varchar(11) NOT NULL UNIQUE DEFAULT '', /* 79999999999 */
     confirmation bool default False,
-    email varchar(30) NOT NULL UNIQUE , /* Nick@gmail.com */
+    email varchar(30) NOT NULL UNIQUE DEFAULT '', /* Nick@gmail.com */
     registration_date date NOT NULL DEFAULT now(),
     rating float8 NOT NULL DEFAULT 0,
     password_hash varchar(60) NOT NULL, /* BCrypt hash length */

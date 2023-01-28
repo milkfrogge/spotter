@@ -23,3 +23,8 @@ func (s *UserService) CreateUserByEmail(dto model.CreateByEmailDTO) (int64, erro
 	id, err := s.storage.CreateByEmail(context.Background(), dto)
 	return id, err
 }
+
+func (s *UserService) CreateUserByPhone(dto model.CreateByPhoneNumberDTO) (int64, error) {
+	id, err := s.storage.CreateByPhoneNumber(context.Background(), dto)
+	return id, err
+}

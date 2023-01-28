@@ -7,4 +7,4 @@ package constants
 
 const InternalServerError = "произошла внутренняя ошибка сервера"
 const UserAlreadyExistsEmail = "пользователь с таким электронным адресом уже зарегистрирован"
-const UserAlreadyExistsPhone = "пользователь с таким номером телеефона уже зарегистртрован"
+const UserAlreadyExistsPhone = "пользователь с таким номером телефона уже зарегистртрован"

@@ -17,6 +17,6 @@ type CreateByEmailDTO struct {
 }
 
 type CreateByPhoneNumberDTO struct {
-	PhoneNumber string
-	Password    string
+	PhoneNumber string `json:"phone_number"`
+	Password    string `json:"password"`
 }
