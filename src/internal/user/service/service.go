@@ -28,3 +28,8 @@ func (s *UserService) CreateUserByPhone(dto model.CreateByPhoneNumberDTO) (int64
 	id, err := s.storage.CreateByPhoneNumber(context.Background(), dto)
 	return id, err
 }
+
+func (s *UserService) AboutUser(id int) (model.User, error) {
+	user, err := s.storage.FindOne(context.Background(), id)
+	return user, err
+}

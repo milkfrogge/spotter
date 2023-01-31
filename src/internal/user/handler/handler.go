@@ -13,14 +13,17 @@ import (
 	"SpotterBackend/src/pkg/utils"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 const endpointCreateByEmail = "/auth/signup/email/"
 const endpointCreateByPhone = "/auth/signup/phone/"
+const endpointAboutUser = "/user/:id"
 
 type userHandler struct {
 	log     *logrus.Logger
@@ -38,6 +41,7 @@ func (h *userHandler) Register(router *httprouter.Router) {
 	h.log.Println("Register routes for user")
 	router.POST(endpointCreateByEmail, h.createByEmail)
 	router.POST(endpointCreateByPhone, h.createByPhone)
+	router.GET(endpointAboutUser, h.AboutUser)
 }
 
 func (h *userHandler) createByEmail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -91,6 +95,24 @@ func (h *userHandler) createByPhone(w http.ResponseWriter, r *http.Request, ps h
 		return
 	}
 	respJSON, err := json.Marshal(map[string]int64{"id": userId})
+	if err != nil {
+		h.log.Errorf("Error while marshall: %s", err)
+		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
+		return
+	}
+	w.Write(respJSON)
+}
+func (h *userHandler) AboutUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	// TODO: remove _ (handle error)
+	id, _ := strconv.Atoi(ps.ByName("id"))
+	fmt.Println(id)
+	user, err := h.service.AboutUser(id)
+	fmt.Println(user)
+	if err != nil {
+		utils.WriteResponseError(w, err)
+		return
+	}
+	respJSON, err := json.Marshal(map[string]int64{"id": 0})
 	if err != nil {
 		h.log.Errorf("Error while marshall: %s", err)
 		utils.WriteResponseError(w, errors.New(constants.InternalServerError))

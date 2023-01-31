@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/georgysavva/scany/v2/pgxscan"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
@@ -80,11 +81,22 @@ func (s *UserStorage) CreateByPhoneNumber(ctx context.Context, user model.Create
 	return id, nil
 }
 
-func (s *UserStorage) FindOne(ctx context.Context, id int) {
+func (s *UserStorage) FindOne(ctx context.Context, id int) (model.User, error) {
 	//TODO implement me
-	var name, email, hash string
-	_ = s.client.QueryRow(ctx, "select name, email, password_hash from public.user where id=1").Scan(&name, &email, &hash)
-	fmt.Printf("%s, %s, %s\n", name, email, hash)
+	var user model.User
+	err := pgxscan.Select(ctx, s.client, &user, "select "+
+		"id, "+
+		"name, "+
+		"phone_number,"+
+		"email,"+
+		"registration_date,"+
+		"rating"+
+		" from public.user where id=$1", id)
+	if err != nil {
+		fmt.Println(err)
+		return model.User{}, nil
+	}
+	return user, nil
 }
 
 func (s *UserStorage) Update(ctx context.Context, user model.User) {

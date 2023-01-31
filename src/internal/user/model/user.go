@@ -8,7 +8,7 @@ type User struct {
 	phoneNumber      int64
 	email            string
 	registrationDate time.Time
-	passwordHash     string
+	rating           float64
 }
 
 type CreateByEmailDTO struct {
