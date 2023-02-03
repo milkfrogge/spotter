@@ -103,7 +103,6 @@ func (h *userHandler) createByPhone(w http.ResponseWriter, r *http.Request, ps h
 	w.Write(respJSON)
 }
 func (h *userHandler) AboutUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	// TODO: remove _ (handle error)
 	id, _ := strconv.Atoi(ps.ByName("id"))
 	fmt.Println(id)
 	user, err := h.service.AboutUser(id)
@@ -112,7 +111,7 @@ func (h *userHandler) AboutUser(w http.ResponseWriter, r *http.Request, ps httpr
 		utils.WriteResponseError(w, err)
 		return
 	}
-	respJSON, err := json.Marshal(map[string]int64{"id": 0})
+	respJSON, err := json.Marshal(user)
 	if err != nil {
 		h.log.Errorf("Error while marshall: %s", err)
 		utils.WriteResponseError(w, errors.New(constants.InternalServerError))
