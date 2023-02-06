@@ -1,8 +1,8 @@
 package service
 
 import (
-	"SpotterBackend/src/internal/user/model"
-	"SpotterBackend/src/internal/user/storage"
+	"SpotterBackend/src/internal/domain/user/model"
+	"SpotterBackend/src/internal/domain/user/storage"
 	"context"
 	"github.com/sirupsen/logrus"
 )
@@ -32,4 +32,9 @@ func (s *UserService) CreateUserByPhone(dto model.CreateByPhoneNumberDTO) (int64
 func (s *UserService) AboutUser(id int) (model.User, error) {
 	user, err := s.storage.FindOne(context.Background(), id)
 	return user, err
+}
+
+func (s *UserService) DeleteUser(id int) error {
+	err := s.storage.Delete(context.Background(), id)
+	return err
 }

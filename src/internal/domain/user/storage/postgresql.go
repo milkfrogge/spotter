@@ -7,7 +7,7 @@ package storage
 
 import (
 	"SpotterBackend/src/internal/constants"
-	"SpotterBackend/src/internal/user/model"
+	"SpotterBackend/src/internal/domain/user/model"
 	"SpotterBackend/src/pkg/client"
 	"context"
 	"errors"
@@ -106,14 +106,17 @@ func (s *UserStorage) FindOne(ctx context.Context, id int) (model.User, error) {
 		Email: email, RegistrationDate: registrationDate, Rating: rating}, nil
 }
 
-func (s *UserStorage) Update(ctx context.Context, user model.User) {
+func (s *UserStorage) Update(ctx context.Context, user model.UpdateUserDTO) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s *UserStorage) Delete(ctx context.Context, id int) {
-	//TODO implement me
-	panic("implement me")
+func (s *UserStorage) Delete(ctx context.Context, id int) error {
+	_, err := s.client.Exec(ctx, "delete from public.user where id=$1", id)
+	if err != nil {
+		return errors.New(constants.InternalServerError)
+	}
+	return nil
 }
 
 func NewStorage(client client.Client, log *logrus.Logger) Storage {

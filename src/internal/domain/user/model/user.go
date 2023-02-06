@@ -20,3 +20,10 @@ type CreateByPhoneNumberDTO struct {
 	PhoneNumber string `json:"phone_number"`
 	Password    string `json:"password"`
 }
+
+type UpdateUserDTO struct {
+	Id          int    `json:"name"`
+	Name        string `json:"name"`
+	PhoneNumber string `json:"phone_number"`
+	Email       string `json:"email"`
+}

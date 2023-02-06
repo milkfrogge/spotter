@@ -2,9 +2,9 @@ package main
 
 import (
 	_ "SpotterBackend/src/docs"
-	"SpotterBackend/src/internal/user/handler"
-	"SpotterBackend/src/internal/user/service"
-	"SpotterBackend/src/internal/user/storage"
+	"SpotterBackend/src/internal/domain/user/handler"
+	"SpotterBackend/src/internal/domain/user/service"
+	"SpotterBackend/src/internal/domain/user/storage"
 	"SpotterBackend/src/pkg/client"
 	"SpotterBackend/src/pkg/config"
 	"SpotterBackend/src/pkg/logging"
@@ -14,18 +14,6 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 )
-
-// @title Spotter Swagger API
-// @version 1.0
-// @description Swagger API for Golang Project Spotter.
-// @termsOfService http://swagger.io/terms/
-
-// @contact.name API Support
-// @contact.email my@test.ru
-
-// @license.name MIT
-
-// @BasePath /
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	log := logging.GetLogger()

@@ -7,9 +7,9 @@ package handler
 
 import (
 	"SpotterBackend/src/internal/constants"
+	"SpotterBackend/src/internal/domain/user/model"
+	"SpotterBackend/src/internal/domain/user/service"
 	"SpotterBackend/src/internal/handler"
-	"SpotterBackend/src/internal/user/model"
-	"SpotterBackend/src/internal/user/service"
 	"SpotterBackend/src/pkg/utils"
 	"encoding/json"
 	"errors"
@@ -42,6 +42,7 @@ func (h *userHandler) Register(router *httprouter.Router) {
 	router.POST(endpointCreateByEmail, h.createByEmail)
 	router.POST(endpointCreateByPhone, h.createByPhone)
 	router.GET(endpointAboutUser, h.AboutUser)
+	router.DELETE(endpointAboutUser, h.DeleteUser)
 }
 
 func (h *userHandler) createByEmail(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -118,4 +119,14 @@ func (h *userHandler) AboutUser(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 	w.Write(respJSON)
+}
+
+func (h *userHandler) DeleteUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	id, _ := strconv.Atoi(ps.ByName("id")) //TODO: получать id из jwt токена
+	err := h.service.DeleteUser(id)
+	if err != nil {
+		utils.WriteResponseError(w, err)
+		return
+	}
+	w.Write([]byte("OK"))
 }
